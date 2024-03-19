@@ -1,16 +1,54 @@
 import socket
-from time import sleep
 
-sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
+def connect_to_server():
+    global sock
+    sock = socket.socket()
+    sock.connect(('localhost', 9090))
+    print("Успешно подключено к серверу.")
 
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
+def receive_data():
+    try:
+        data = sock.recv(1024)
+        print('Прием данных от сервера:', data.decode())
+    except socket.error as e:
+        print(f"Ошибка при получении данных: {e}")
 
-data = sock.recv(1024)
+def send_data():
+    try:
+        message = input("Введите сообщение для отправки на сервер: ")
+        print('Отправка данных серверу:', message)
+        sock.sendall(message.encode())
+    except socket.error as e:
+        print(f"Ошибка при отправке данных: {e}")
 
-sock.close()
+def disconnect_from_server():
+    try:
+        sock.close()
+        print('Отключение от сервера')
+    except socket.error as e:
+        print(f"Ошибка при отключении: {e}")
 
-print(data.decode())
+def ex():
+    exit()
+
+options = {
+    '1': connect_to_server,
+    '2': receive_data,
+    '3': send_data,
+    '4': disconnect_from_server,
+    '5': ex
+}
+
+while True:
+    print("Меню:")
+    print("1. Подключиться к серверу")
+    print("2. Получить данные от сервера")
+    print("3. Отправить данные серверу")
+    print("4. Отключиться от сервера")
+    print("5. Завершить программу")
+    choice = input("Выберите действие: ")
+
+    if choice in options:
+        options[choice]()
+    else:
+        print("Неверный выбор. Пожалуйста, введите корректное значение.")
