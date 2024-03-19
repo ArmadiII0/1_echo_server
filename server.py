@@ -3,7 +3,7 @@ import socket
 def create_socket_and_listen():
     global sock, conn, addr
     sock = socket.socket()
-    sock.bind(('', 9090))
+    sock.bind(('', 9092))
     sock.listen(0)
     print('Начало прослушивания порта')
     conn, addr = sock.accept()
@@ -32,6 +32,10 @@ def disconnect_client():
         print(f"Ошибка при отключении: {e}")
 
 def ex():
+    try:
+        sock.close()
+    except socket.error as e:
+        print(f"Ошибка при закрытии сокета: {e}")
     exit()
 
 options = {

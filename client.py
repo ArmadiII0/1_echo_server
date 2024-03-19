@@ -3,7 +3,7 @@ import socket
 def connect_to_server():
     global sock
     sock = socket.socket()
-    sock.connect(('localhost', 9090))
+    sock.connect(('localhost', 9092))
     print("Успешно подключено к серверу.")
 
 def receive_data():
